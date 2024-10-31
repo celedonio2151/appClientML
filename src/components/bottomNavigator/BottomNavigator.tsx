@@ -14,7 +14,9 @@ import HomeScreen from '../../screens/home/HomeScreen';
 import ChartScreen from '../../screens/charts/Charts';
 import PaymentsScreen from '../../screens/payments/Payments';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs'; // no error
-import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
+import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
+import DownloadPDF from '../../screens/downloadPDF/DownloadPDF';
+import SegunaOpcionPDF from '../../screens/downloadPDF/SeundaOpcionPDF';
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -24,8 +26,7 @@ export default function BootomNavigator() {
       initialRouteName="Home"
       // activeColor="#e91e63"
       activeColor="green"
-      barStyle={{backgroundColor: 'black'}}
-    >
+      barStyle={{backgroundColor: 'black'}}>
       <Tab.Screen
         name="Home"
         component={HomeScreen}
@@ -75,7 +76,8 @@ export default function BootomNavigator() {
       <Tab.Screen
         name="SignIn"
         // component={PDFView}
-        component={TestScreen}
+        component={DownloadPDF}
+        // component={SegunaOpcionPDF}
         options={{
           title: 'PDF',
           tabBarLabel: 'Mi recibo',

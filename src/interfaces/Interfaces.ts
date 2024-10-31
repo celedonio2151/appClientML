@@ -20,7 +20,7 @@ export interface TypeContext {
   token: string | null;
   setToken: (token: string | null) => void;
   userProfile: UserProfileInterface | null;
-  setProfile: (profile: UserProfileInterface | null) => void;
+  setProfile: (profile: UserProfileInterface) => void;
   logout: () => void;
 }
 

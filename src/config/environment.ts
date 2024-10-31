@@ -8,5 +8,5 @@
 export const config = {
   PORT: 8050,
   // SERVER: 'http://10.0.2.2:3050/api/v1',
-  SERVER: 'http://192.168.92.130:3050/api/v1',
+  SERVER: 'http://192.168.227.130:3050/api/v1',
 };
