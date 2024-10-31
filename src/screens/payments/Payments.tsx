@@ -25,7 +25,6 @@ import { GenerateQRInterface } from '../interfaces/regerateQR';
 import LoadingActivity from '../../components/activity/LoadingActivity';
 import InfinityScroll from '../../components/infinityScroll/InfinityScroll';
 import useFetchEvent from '../../hooks/useFetchEvent';
-// import PDFView from '../pdfView/PDFView';
 
 export default function PaymentsScreen() {
   const { token, userProfile } = useContext(UserContext);
@@ -141,11 +140,7 @@ export default function PaymentsScreen() {
                 backgroundColor: 'white',
                 padding: 10,
               }}>
-              <Text>Recibo de pago</Text>
               <PDFView readingId={String(readingId)} />
-              <Button mode="contained" onPress={() => { }}>
-                Descargar
-              </Button>
             </Modal>
           )}
         </Portal>

@@ -1,27 +1,77 @@
-import React from 'react';
-import {StyleSheet, Dimensions, View} from 'react-native';
-// import Pdf from 'react-native-pdf';
+import React, { useContext } from 'react';
+import { StyleSheet, Dimensions, View, Platform, Alert } from 'react-native';
+import Pdf from 'react-native-pdf';
 // import {Text} from 'react-native-paper';
-import {config} from '../../config/environment';
-import {Text} from 'react-native-paper';
+import { config } from '../../config/environment';
+import { Button, Text } from 'react-native-paper';
 import ScrollViewContainer from '../../layouts/ScrollViewContainer';
+import RNFetchBlob from 'rn-fetch-blob';
+import UserContext from '../../context/Context';
+import { dateNameCustom } from '../../helpers/formatDate';
 
-export default function PDFView({readingId}: {readingId: string}) {
-  const source = {
-    uri: `${config.SERVER}/invoice/pdf/${readingId}`,
-    cache: true,
-  };
+export default function PDFView({ readingId }: { readingId: string }) {
+  const { token } = useContext(UserContext)
   // const source = {
-  //   // uri: `https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf`,
-  //   uri: `https://pspdfkit.com/downloads/pspdfkit-android-quickstart-guide.pdf`,
+  //   uri: `${config.SERVER}/invoice/pdf/${readingId}`,
   //   cache: true,
   // };
+  const source = {
+    // uri: `https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf`,
+    uri: `https://pspdfkit.com/downloads/pspdfkit-android-quickstart-guide.pdf`,
+    cache: true,
+  };
+
+  const downloadInvoicePDF = () => {
+    const date = new Date();
+    const invoiceName = dateNameCustom(date, 'dddd_DD_MMMM_YYYY_HH_mm');
+    const { dirs } = RNFetchBlob.fs;
+    const dirToSave =
+      Platform.OS === 'ios' ? dirs.DocumentDir : dirs.DownloadDir;
+    const configfb = {
+      fileCache: true,
+      appendExt: 'pdf',
+      addAndroidDownloads: {
+        useDownloadManager: true,
+        notification: true,
+        mediaScannable: true,
+        title: `Recibo.pdf`,
+        path: `${dirs.DownloadDir}/Recibo_${invoiceName}.pdf`,
+      },
+      useDownloadManager: true,
+      notification: true,
+      mediaScannable: true,
+      title: 'Recibo.pdf',
+      path: `${dirToSave}/Recibo_${invoiceName}.pdf`,
+    };
+    const configOptions = Platform.select({
+      ios: configfb,
+      android: configfb,
+    });
+
+    RNFetchBlob.config(configOptions || {})
+      .fetch('GET', source.uri, {
+        Authorization: `Bearer ${token}`,
+      })
+      .then(res => {
+        if (Platform.OS === 'ios') {
+          RNFetchBlob.fs.writeFile(configfb.path, res.data, 'base64');
+          RNFetchBlob.ios.previewDocument(configfb.path);
+        }
+        if (Platform.OS === 'android') {
+          console.log('file downloaded');
+          Alert.alert('Recibo descargado correctamente');
+        }
+      })
+      .catch(e => {
+        console.log('invoice Download==>', e);
+      });
+  };
 
   return (
     <ScrollViewContainer>
-      <View>
-        <Text>Mi Primer imprsion de PDF</Text>
-        {/* <Pdf
+      <View style={styles.container}>
+        <Text style={styles.title}>Mi Primer imprsion de PDF</Text>
+        <Pdf
           source={source}
           trustAllCerts={false}
           enablePaging={false}
@@ -38,27 +88,55 @@ export default function PDFView({readingId}: {readingId: string}) {
             console.log(`Link pressed: ${uri}`);
           }}
           style={styles.pdf}
-        /> */}
+        />
+      </View>
+      <View style={styles.containerButton}>
+        <Button
+          mode='elevated'
+          buttonColor='green'
+          style={styles.downloadButton}
+          textColor='white'
+          icon={"download"}
+          onPress={downloadInvoicePDF}>
+          Descargar
+        </Button>
       </View>
     </ScrollViewContainer>
   );
 }
+
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'flex-start',
     alignItems: 'center',
-    marginTop: 25,
+    // marginTop: 25,
     // width: 100,
     // height: 300,
   },
+  title: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
   pdf: {
-    backgroundColor: 'red',
+    backgroundColor: 'skyblue',
     flex: 1,
-    // width: Dimensions.get('window').width,
+    width: Dimensions.get('window').width,
     // height: Dimensions.get('window').height,
     // width: '100%',
     height: 450,
   },
+  containerButton: {
+    display: 'flex',
+    width: "100%",
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    marginTop: 10,
+  },
+  downloadButton: {
+    width: "100%",
+  }
+
 });
