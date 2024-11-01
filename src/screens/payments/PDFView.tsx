@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { StyleSheet, Dimensions, View, Platform, Alert } from 'react-native';
+import { StyleSheet, Dimensions, View, Platform, Alert, PermissionsAndroid } from 'react-native';
 import Pdf from 'react-native-pdf';
 // import {Text} from 'react-native-paper';
 import { config } from '../../config/environment';
@@ -8,6 +8,7 @@ import ScrollViewContainer from '../../layouts/ScrollViewContainer';
 import RNFetchBlob from 'rn-fetch-blob';
 import UserContext from '../../context/Context';
 import { dateNameCustom } from '../../helpers/formatDate';
+import requestPermission from '../../helpers/permissionDownload';
 
 export default function PDFView({ readingId }: { readingId: string }) {
   const { token } = useContext(UserContext)
@@ -19,6 +20,13 @@ export default function PDFView({ readingId }: { readingId: string }) {
     // uri: `https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf`,
     uri: `https://pspdfkit.com/downloads/pspdfkit-android-quickstart-guide.pdf`,
     cache: true,
+  };
+  const requestStoragePermission = async () => {
+    await requestPermission({
+      permission: PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+      onPermissionDenied: () => console.log('Permission denied'),
+      onPermissionGranted: () => downloadInvoicePDF(),
+    });
   };
 
   const downloadInvoicePDF = () => {
@@ -97,7 +105,7 @@ export default function PDFView({ readingId }: { readingId: string }) {
           style={styles.downloadButton}
           textColor='white'
           icon={"download"}
-          onPress={downloadInvoicePDF}>
+          onPress={requestStoragePermission}>
           Descargar
         </Button>
       </View>

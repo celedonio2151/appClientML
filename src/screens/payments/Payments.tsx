@@ -13,7 +13,6 @@ import IoniIcons from 'react-native-vector-icons/Ionicons';
 
 import LayoutContainer from '../../layouts/LayoutContainer';
 import ScrollViewContainer from '../../layouts/ScrollViewContainer';
-import PDFView from '../invoice/PDFView';
 import GenerateQR from './GenerateQR';
 import useFetch from '../../hooks/useFetch';
 import UserContext from '../../context/Context';
@@ -25,6 +24,7 @@ import { GenerateQRInterface } from '../interfaces/regerateQR';
 import LoadingActivity from '../../components/activity/LoadingActivity';
 import InfinityScroll from '../../components/infinityScroll/InfinityScroll';
 import useFetchEvent from '../../hooks/useFetchEvent';
+import PDFView from './PDFView';
 
 export default function PaymentsScreen() {
   const { token, userProfile } = useContext(UserContext);
@@ -110,16 +110,6 @@ export default function PaymentsScreen() {
                 backgroundColor: 'white',
                 padding: 10,
               }}>
-              <Text
-                style={{
-                  textAlign: 'center',
-                  fontSize: 20,
-                  fontWeight: 'bold',
-                  color: 'green',
-                  textDecorationLine: 'underline',
-                }}>
-                QR Banco Nacional de Bolivia BNB
-              </Text>
               {responseQR ? (
                 <GenerateQR qr={String(responseQR)} />
               ) : (
