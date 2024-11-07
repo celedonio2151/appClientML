@@ -6,21 +6,23 @@ import { config } from '../../config/environment';
 import { Button, Text } from 'react-native-paper';
 import ScrollViewContainer from '../../layouts/ScrollViewContainer';
 import RNFetchBlob from 'rn-fetch-blob';
-import UserContext from '../../context/Context';
 import { dateNameCustom } from '../../helpers/formatDate';
 import requestPermission from '../../helpers/permissionDownload';
 
-export default function PDFView({ readingId }: { readingId: string }) {
-  const { token } = useContext(UserContext)
+export default function PDFView({ readingId, token }: { readingId: string, token: string | null }) {
+  // console.log("🚀 ~ PDFView ~ token:", readingId, token)
+  const source = {
+    uri: `${config.SERVER}/invoice/pdf/${readingId}`,
+    cache: false,
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
   // const source = {
-  //   uri: `${config.SERVER}/invoice/pdf/${readingId}`,
+  //   // uri: `https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf`,
+  //   uri: `https://pspdfkit.com/downloads/pspdfkit-android-quickstart-guide.pdf`,
   //   cache: true,
   // };
-  const source = {
-    // uri: `https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf`,
-    uri: `https://pspdfkit.com/downloads/pspdfkit-android-quickstart-guide.pdf`,
-    cache: true,
-  };
   const requestStoragePermission = async () => {
     await requestPermission({
       permission: PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
@@ -49,6 +51,7 @@ export default function PDFView({ readingId }: { readingId: string }) {
       notification: true,
       mediaScannable: true,
       title: 'Recibo.pdf',
+      date: `new Date()`,
       path: `${dirToSave}/Recibo_${invoiceName}.pdf`,
     };
     const configOptions = Platform.select({
@@ -90,7 +93,7 @@ export default function PDFView({ readingId }: { readingId: string }) {
             console.log(`Current page: ${page}`);
           }}
           onError={error => {
-            console.log(error);
+            console.log("Noo ocurrio un error", error);
           }}
           onPressLink={uri => {
             console.log(`Link pressed: ${uri}`);

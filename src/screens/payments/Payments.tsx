@@ -58,7 +58,7 @@ export default function PaymentsScreen() {
 
   const handleOnPay = (readingId: string) => {
     console.log('Ver recibo de pago o descargar QR ', readingId);
-    setGenerateQR(true);
+    // setGenerateQR(true);
     setShowQr(true);
     showModal();
     usePost(`/invoice/qr/${readingId}`, '', token!)
@@ -130,7 +130,7 @@ export default function PaymentsScreen() {
                 backgroundColor: 'white',
                 padding: 10,
               }}>
-              <PDFView readingId={String(readingId)} />
+              <PDFView readingId={String(readingId)} token={token} />
             </Modal>
           )}
         </Portal>
