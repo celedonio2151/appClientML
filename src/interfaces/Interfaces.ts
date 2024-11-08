@@ -4,12 +4,12 @@ export interface UserProfileInterface {
   ci: number;
   name: string;
   surname: string;
-  phone_number?: number;
+  phone_number?: number | null;
   email?: string;
   meter_number?: number;
-  birthdate?: string;
+  birthdate?: string | null;
   roles: string[];
-  profileImg?: string;
+  profileImg: string;
   created_at: string;
   updated_at: string;
   status: boolean;

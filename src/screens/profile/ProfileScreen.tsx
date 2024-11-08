@@ -24,6 +24,7 @@ import useFetch from '../../hooks/useFetch';
 import UserDetails from './components/UserDetails';
 import LoadingActivity from '../../components/activity/LoadingActivity';
 import EditMeForm from './components/EditMeForm';
+import {UserProfileInterface} from '../../interfaces/Interfaces';
 
 export default function UserProfileScreen({
   profilePicture = 'https://source.unsplash.com/random/800x600/?river,park',
@@ -34,7 +35,7 @@ export default function UserProfileScreen({
   const [formEdit, setFormEdit] = useState<boolean>(false); // Show or hidden from editing
   const {top} = useSafeAreaInsets();
   // const postRequest = usePost(`/me`, token);
-  const [data, loading, error, isCanceled] = useFetch(
+  const [data, loading, error] = useFetch<UserProfileInterface>(
     `/user/me`,
     token,
     eventTrigger,
@@ -89,10 +90,10 @@ export default function UserProfileScreen({
               mode="elevated"
               elevation={3}
               style={styles.imgProfileContainer}>
-              {data && data?.profileImg ? (
+              {data && data.profileImg ? (
                 <Image
                   source={{
-                    uri: data?.profileImg,
+                    uri: data.profileImg,
                   }}
                   style={styles.profileImage}
                 />
