@@ -11,6 +11,8 @@ export interface Aditional {
   singleUse:            boolean;
   additionalData:       string;
   destinationAccountId: number;
+  name:                 string;
+  month:                string;
 }
 
 export interface BankBNB {

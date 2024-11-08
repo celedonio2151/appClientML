@@ -31,7 +31,7 @@ export default function PaymentsScreen() {
   const [visible, setVisible] = useState(false); // Show or hide modal window
   const [readingId, setReadingId] = useState<string>('');
   const [generateQR, setGenerateQR] = useState<boolean | null>(null);
-  const [responseQR, setResponseQR] = useState<string>('');
+  const [responseBNB, setResponseBNB] = useState<GenerateQRInterface>();
   const [loadingQR, setLoadingQR] = useState<boolean>(false);
   const [errorQR, setErrorQR] = useState<null>(null);
   const [showInvoice, setShowInvoice] = useState<boolean>(false);
@@ -63,7 +63,7 @@ export default function PaymentsScreen() {
     showModal();
     usePost(`/invoice/qr/${readingId}`, '', token!)
       .then(response => {
-        setResponseQR(response.bankBNB?.qr);
+        setResponseBNB(response);
         console.log(response);
       })
       .catch(err => {
@@ -102,16 +102,14 @@ export default function PaymentsScreen() {
               visible={visible}
               onDismiss={hideModal}
               contentContainerStyle={{
-                // width: '100%',
-                margin: 10,
                 borderRadius: 10,
                 height: '70%',
-                justifyContent: 'center',
                 backgroundColor: 'white',
-                padding: 10,
+                // padding: 10,
+                marginHorizontal: 10,
               }}>
-              {responseQR ? (
-                <GenerateQR qr={String(responseQR)} />
+              {responseBNB ? (
+                <GenerateQR responseBNB={responseBNB} />
               ) : (
                 <LoadingActivity title="Cargando codigo QR" />
               )}

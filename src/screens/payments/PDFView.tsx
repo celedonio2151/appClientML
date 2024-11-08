@@ -1,15 +1,28 @@
-import React, { useContext } from 'react';
-import { StyleSheet, Dimensions, View, Platform, Alert, PermissionsAndroid } from 'react-native';
+import React, {useContext} from 'react';
+import {
+  StyleSheet,
+  Dimensions,
+  View,
+  Platform,
+  Alert,
+  PermissionsAndroid,
+} from 'react-native';
 import Pdf from 'react-native-pdf';
 // import {Text} from 'react-native-paper';
-import { config } from '../../config/environment';
-import { Button, Text } from 'react-native-paper';
+import {config} from '../../config/environment';
+import {Button, Text} from 'react-native-paper';
 import ScrollViewContainer from '../../layouts/ScrollViewContainer';
 import RNFetchBlob from 'rn-fetch-blob';
-import { dateNameCustom } from '../../helpers/formatDate';
+import {dateNameCustom} from '../../helpers/formatDate';
 import requestPermission from '../../helpers/permissionDownload';
 
-export default function PDFView({ readingId, token }: { readingId: string, token: string | null }) {
+export default function PDFView({
+  readingId,
+  token,
+}: {
+  readingId: string;
+  token: string | null;
+}) {
   // console.log("🚀 ~ PDFView ~ token:", readingId, token)
   const source = {
     uri: `${config.SERVER}/invoice/pdf/${readingId}`,
@@ -34,7 +47,7 @@ export default function PDFView({ readingId, token }: { readingId: string, token
   const downloadInvoicePDF = () => {
     const date = new Date();
     const invoiceName = dateNameCustom(date, 'dddd_DD_MMMM_YYYY_HH_mm');
-    const { dirs } = RNFetchBlob.fs;
+    const {dirs} = RNFetchBlob.fs;
     const dirToSave =
       Platform.OS === 'ios' ? dirs.DocumentDir : dirs.DownloadDir;
     const configfb = {
@@ -81,7 +94,7 @@ export default function PDFView({ readingId, token }: { readingId: string, token
   return (
     <ScrollViewContainer>
       <View style={styles.container}>
-        <Text style={styles.title}>Mi Primer imprsion de PDF</Text>
+        <Text style={styles.title}>Mi recivo de agua en PDF</Text>
         <Pdf
           source={source}
           trustAllCerts={false}
@@ -93,7 +106,7 @@ export default function PDFView({ readingId, token }: { readingId: string, token
             console.log(`Current page: ${page}`);
           }}
           onError={error => {
-            console.log("Noo ocurrio un error", error);
+            console.log('Noo ocurrio un error', error);
           }}
           onPressLink={uri => {
             console.log(`Link pressed: ${uri}`);
@@ -103,11 +116,11 @@ export default function PDFView({ readingId, token }: { readingId: string, token
       </View>
       <View style={styles.containerButton}>
         <Button
-          mode='elevated'
-          buttonColor='green'
+          mode="elevated"
+          buttonColor="green"
           style={styles.downloadButton}
-          textColor='white'
-          icon={"download"}
+          textColor="white"
+          icon={'download'}
           onPress={requestStoragePermission}>
           Descargar
         </Button>
@@ -115,7 +128,6 @@ export default function PDFView({ readingId, token }: { readingId: string, token
     </ScrollViewContainer>
   );
 }
-
 
 const styles = StyleSheet.create({
   container: {
@@ -141,13 +153,12 @@ const styles = StyleSheet.create({
   },
   containerButton: {
     display: 'flex',
-    width: "100%",
+    width: '100%',
     justifyContent: 'flex-start',
     alignItems: 'center',
     marginTop: 10,
   },
   downloadButton: {
-    width: "100%",
-  }
-
+    width: '100%',
+  },
 });
