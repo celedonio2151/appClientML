@@ -9,6 +9,7 @@ import {Button, Card, HelperText, TextInput} from 'react-native-paper';
 import {Controller, useForm} from 'react-hook-form';
 import {useAppTheme} from '../../../..';
 import LoadingActivity from '../../../components/activity/LoadingActivity';
+import {UserProfileInterface} from '../../../interfaces/Interfaces';
 
 interface BodyData {
   email: string;
@@ -22,8 +23,11 @@ export default function EditMeForm({setFormEdit}): React.JSX.Element {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [inputDate, setInputDate] = useState(undefined); // Input Date Picker
-  const [myData, loadingMe, errorMe] = useFetch(`/user/me`, token);
+  const [inputDate, setInputDate] = useState<Date | null>(new Date()); // Input Date Picker
+  const [myData, loadingMe, errorMe] = useFetch<UserProfileInterface>(
+    `/user/me`,
+    token,
+  );
 
   // console.log(myData, loading, error);
   const {
@@ -37,17 +41,30 @@ export default function EditMeForm({setFormEdit}): React.JSX.Element {
     defaultValues: {
       email: '',
       phone_number: '',
-      birthdate: '',
+      birthdate: '2024-11-06T04:00:00.000Z',
       profileImg: '',
     },
   });
 
-  setValue('email', myData?.email);
-  setValue('phone_number', String(myData?.phone_number));
-  setValue('birthdate', String(myData?.birthdate));
+  useEffect(() => {
+    if (myData) {
+      setValue('email', myData?.email || '');
+      setValue('phone_number', String(myData?.phone_number));
+      // setValue('birthdate', String(myData?.birthdate));
+      myData.birthdate
+        ? setInputDate(new Date(myData.birthdate))
+        : setInputDate(null);
+    }
+    return () => {};
+  }, [myData]);
 
   const onSubmit = (data: BodyData) => {
-    console.log('This is the data to submit', data, inputDate);
+    const body = {
+      email: data.email,
+      phone_number: data.phone_number,
+      birthdate: inputDate,
+    };
+    console.log('This is the data to submit', body);
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
@@ -76,7 +93,7 @@ export default function EditMeForm({setFormEdit}): React.JSX.Element {
         onPress={() => setFormEdit(false)}>
         Cancelar
       </Button>
-      {myData && !loading ? (
+      {myData && !loadingMe ? (
         <Card>
           <Card.Content style={stylesC.formGroup}>
             <Controller
@@ -84,8 +101,8 @@ export default function EditMeForm({setFormEdit}): React.JSX.Element {
               rules={{
                 validate: value => {
                   // console.log({value});
-                  return !!value || '*Campo requerido';
-                  // return true;
+                  // return !!value || '*Campo requerido';
+                  return true;
                 },
               }}
               render={({field: {onChange, onBlur, value}}) => (
@@ -104,7 +121,7 @@ export default function EditMeForm({setFormEdit}): React.JSX.Element {
                   // onBlur={onBlur}
                   right={<TextInput.Icon icon="email" />}
                   {...register('email', {
-                    required: true,
+                    required: false,
                   })}
                 />
               )}
@@ -120,8 +137,8 @@ export default function EditMeForm({setFormEdit}): React.JSX.Element {
               rules={{
                 validate: value => {
                   // console.log({value});
-                  return !!value || '*Campo requerido';
-                  // return true;
+                  // return !!value || '*Campo requerido';
+                  return true;
                 },
               }}
               render={({field: {onChange, onBlur, value}}) => (
@@ -140,7 +157,7 @@ export default function EditMeForm({setFormEdit}): React.JSX.Element {
                   // onBlur={onBlur}
                   right={<TextInput.Icon icon="cellphone" />}
                   {...register('phone_number', {
-                    required: true,
+                    required: false,
                   })}
                 />
               )}

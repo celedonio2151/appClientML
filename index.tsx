@@ -4,11 +4,13 @@
 
 import 'react-native-gesture-handler';
 
-import { AppRegistry } from 'react-native';
-import { DefaultTheme, PaperProvider, useTheme } from 'react-native-paper';
+import {AppRegistry} from 'react-native';
+import {DefaultTheme, PaperProvider, useTheme} from 'react-native-paper';
+import {es, registerTranslation} from 'react-native-paper-dates';
+registerTranslation('es', es);
 
 import App from './App';
-import { name as appName } from './app.json';
+import {name as appName} from './app.json';
 
 const theme = {
   // roundness: 2,

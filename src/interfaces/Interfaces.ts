@@ -4,16 +4,16 @@ export interface UserProfileInterface {
   ci: number;
   name: string;
   surname: string;
-  phone_number?: number | null;
-  email?: string;
+  phone_number: number | null;
+  email: string | null;
   meter_number?: number;
-  birthdate?: string | null;
+  birthdate: string | null;
   roles: string[];
   profileImg: string;
   created_at: string;
   updated_at: string;
   status: boolean;
-  devices?: string;
+  devices: string;
 }
 
 export interface TypeContext {

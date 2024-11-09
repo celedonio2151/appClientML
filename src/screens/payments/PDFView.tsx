@@ -94,7 +94,7 @@ export default function PDFView({
   return (
     <ScrollViewContainer>
       <View style={styles.container}>
-        <Text style={styles.title}>Mi recivo de agua en PDF</Text>
+        <Text style={styles.title}>Mi recibo de pago de agua en PDF</Text>
         <Pdf
           source={source}
           trustAllCerts={false}
