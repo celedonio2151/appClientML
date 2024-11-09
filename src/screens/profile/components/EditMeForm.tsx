@@ -86,13 +86,6 @@ export default function EditMeForm({setFormEdit}): React.JSX.Element {
   return (
     <View>
       <Text style={stylesC.title}>Actualizar mis datos personales</Text>
-      <Button
-        mode="elevated"
-        buttonColor="red"
-        loading={true}
-        onPress={() => setFormEdit(false)}>
-        Cancelar
-      </Button>
       {myData && !loadingMe ? (
         <Card>
           <Card.Content style={stylesC.formGroup}>
@@ -112,11 +105,8 @@ export default function EditMeForm({setFormEdit}): React.JSX.Element {
                   label="Email"
                   placeholder="Email"
                   value={value}
-                  error={errors.email && true}
-                  // outlineColor={'red'}
-                  outlineStyle={{
-                    borderRadius: 10,
-                  }}
+                  // style={stylesC.formInput}
+                  outlineStyle={stylesC.formInputOutline}
                   onChangeText={onChange}
                   // onBlur={onBlur}
                   right={<TextInput.Icon icon="email" />}
@@ -148,11 +138,9 @@ export default function EditMeForm({setFormEdit}): React.JSX.Element {
                   label="Número de celular"
                   placeholder="Número de celular"
                   value={value}
-                  error={errors.phone_number && true}
+                  style={stylesC.formInput}
                   // outlineColor={'red'}
-                  outlineStyle={{
-                    borderRadius: 10,
-                  }}
+                  outlineStyle={stylesC.formInputOutline}
                   onChangeText={onChange}
                   // onBlur={onBlur}
                   right={<TextInput.Icon icon="cellphone" />}
@@ -183,7 +171,8 @@ export default function EditMeForm({setFormEdit}): React.JSX.Element {
             <View
               style={{justifyContent: 'center', flex: 1, alignItems: 'center'}}>
               <DatePickerInput
-                style={{borderRadius: 10}}
+                style={stylesC.formInput}
+                outlineStyle={stylesC.formInputOutline}
                 locale="es"
                 mode="outlined"
                 label="Fecha de nacimiento"
@@ -253,19 +242,21 @@ function stylesCustom() {
       // paddingTop: 20,
       marginBottom: 15,
     },
+    formInput: {
+      marginTop: 8,
+    },
+    formInputOutline: {
+      borderRadius: 10,
+    },
     loginButton: {
       // backgroundColor: '#009A2B',
       borderRadius: 10,
+      padding: 5,
     },
     loginButtonText: {
       color: colors.whiteC,
       fontWeight: 'bold',
       fontSize: 15,
-      padding: 5,
-    },
-    groupFooterOne: {
-      // flexDirection: 'row',
-      // justifyContent: 'space-between',
     },
     textColor: {
       color: colors.blackC,

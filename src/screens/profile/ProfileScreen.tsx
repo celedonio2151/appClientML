@@ -116,9 +116,15 @@ export default function UserProfileScreen({
                 marginTop: -50,
                 // alignContent: 'flex-end',
               }}>
-              <Button onPress={() => setFormEdit(true)}>
-                <CommunityIcons name={'pen'} size={25} color="gray" />
-              </Button>
+              {formEdit ? (
+                <Button onPress={() => setFormEdit(false)}>
+                  <CommunityIcons name={'close'} size={25} color="red" />
+                </Button>
+              ) : (
+                <Button onPress={() => setFormEdit(true)}>
+                  <CommunityIcons name={'pen'} size={25} color="gray" />
+                </Button>
+              )}
             </View>
             {!formEdit ? (
               data ? (
@@ -151,7 +157,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     height: '100%',
-    backgroundColor: 'white',
+    // backgroundColor: 'white',
     justifyContent: 'space-between',
   },
   firstCardContainer: {
