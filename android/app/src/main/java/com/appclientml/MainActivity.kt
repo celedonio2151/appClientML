@@ -1,6 +1,7 @@
 package com.appclientml
 
 import android.os.Bundle
+import com.rnfs.RNFSPackage;  // <--- import
 
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate

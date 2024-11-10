@@ -8,22 +8,22 @@ import {
   Dimensions,
   StyleSheet,
 } from 'react-native';
-import React, {useContext, useRef} from 'react';
+import React, {useContext, useRef, useState} from 'react';
 import {Button} from 'react-native-paper';
 import {captureRef} from 'react-native-view-shot';
 import Share from 'react-native-share';
+import {
+  DocumentDirectoryPath,
+  DownloadDirectoryPath,
+  writeFile,
+  copyFile,
+} from 'react-native-fs';
 
 import {dateNameCustom, formatDate} from '../../helpers/formatDate';
 import RNFetchBlob from 'rn-fetch-blob';
 import requestPermission from '../../helpers/permissionDownload';
 import UserContext from '../../context/Context';
 import {GenerateQRInterface} from '../interfaces/regerateQR';
-interface PropsBank {
-  id: string;
-  qr: string;
-  success: boolean;
-  message: string;
-}
 // {id, qr, success, message}: PropsBank
 export default function GenerateQR({
   responseBNB,
@@ -41,6 +41,8 @@ export default function GenerateQR({
   };
   const codeQR = responseBNB.bankBNB.qr;
   const viewRef = useRef(null);
+  const [urlQR, setUrlQR] = useState();
+
   const shareImage = async () => {
     try {
       const uri = await captureRef(viewRef, {
@@ -66,54 +68,30 @@ export default function GenerateQR({
     await requestPermission({
       permission: PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
       onPermissionDenied: () => console.log('Permission denied'),
-      onPermissionGranted: () => downloadImageQRBNB(),
+      onPermissionGranted: () => saveImage(),
     });
   };
 
-  const downloadImageQRBNB = () => {
-    const date = new Date();
-    const imageName = dateNameCustom(date, 'dddd_DD_MMMM_YYYY_HH_mm');
-    const {dirs} = RNFetchBlob.fs;
-    const dirToSave =
-      Platform.OS === 'ios' ? dirs.DocumentDir : dirs.DownloadDir;
-    const configfb = {
-      fileCache: true,
-      appendExt: 'png',
-      addAndroidDownloads: {
-        useDownloadManager: true,
-        notification: true,
-        mediaScannable: true,
-        title: `Codigo.png`,
-        path: `${dirs.DownloadDir}/Codigo_QR_${imageName}.png`,
-      },
-      useDownloadManager: true,
-      notification: true,
-      mediaScannable: true,
-      title: 'Recibo.pdf',
-      path: `${dirToSave}/Recibo_${imageName}.png`,
-    };
-    const configOptions = Platform.select({
-      ios: configfb,
-      android: configfb,
+  const saveImage = async () => {
+    const nameFile = formatDate(new Date(), 'DD-MMM-YYYY');
+    const uri = await captureRef(viewRef, {
+      format: 'png',
+      quality: 0.8,
     });
+    // console.log('uri', uri);
+    const path = `${DownloadDirectoryPath}/CodigoQR_BNB_${nameFile}.png`;
 
-    RNFetchBlob.config(configOptions || {})
-      .fetch('POST', imageUrl, {
-        Authorization: `Bearer ${token}`,
-      })
-      .then(res => {
-        if (Platform.OS === 'ios') {
-          RNFetchBlob.fs.writeFile(configfb.path, res.data, 'base64');
-          RNFetchBlob.ios.previewDocument(configfb.path);
-        }
-        if (Platform.OS === 'android') {
-          console.log('file downloaded');
-          Alert.alert('Imagen codigo QR de BNB descargado correctamente');
-        }
-      })
-      .catch(e => {
-        console.log('invoice Download==>', e);
-      });
+    console.log('🚀 ~ saveImage ~ path:', path);
+    try {
+      await copyFile(uri, path);
+      Alert.alert(
+        'Codigo QR guardado correctamente',
+        'En la carpeta de descargas',
+        [{text: 'OK'}],
+      );
+    } catch (e) {
+      console.log('error', e);
+    }
   };
 
   return (
@@ -124,21 +102,21 @@ export default function GenerateQR({
       <View ref={viewRef} style={styles.containerImg}>
         <View style={styles.containerAdditional}>
           <View style={styles.aditionalRow}>
-            <Text style={{color: 'black'}}>
+            <Text style={{color: 'black', flex: 4}}>
               Nombre: {responseBNB.aditional.name}
             </Text>
-            <Text style={{color: 'black'}}>
+            <Text style={{color: 'black', flex: 1}}>
               Mes: {formatDate(new Date(responseBNB.aditional.month), 'MMMM')}{' '}
             </Text>
           </View>
           <View style={styles.aditionalRow}>
-            <Text style={{color: 'black'}}>
+            <Text style={{color: 'black', flex: 1}}>
               Saldo:{responseBNB.aditional.amount}Bs
             </Text>
-            <Text style={{color: 'black'}}>
+            <Text style={{color: 'black', flex: 1}}>
               Uso único: {responseBNB.aditional.singleUse ? 'SI' : 'NO'}{' '}
             </Text>
-            <Text style={{color: 'black'}}>
+            <Text style={{color: 'black', flex: 1}}>
               Expira:{' '}
               {formatDate(
                 new Date(responseBNB.aditional.expirationDate),
@@ -151,16 +129,6 @@ export default function GenerateQR({
           source={{uri: `data:image/png;base64,${codeQR}`}}
           style={styles.imageQR}
         />
-        {/* <Image
-          source={{
-            uri:
-              'https://images.pexels.com/photos/380768/pexels-photo-380768.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=75&w=126',
-          }}
-          style={{
-            width: '100%',
-            height: '100%',
-          }}
-        /> */}
       </View>
       <View style={styles.containerButton}>
         <Button
@@ -216,11 +184,11 @@ const styles = StyleSheet.create({
     // padding: 5,
     borderWidth: 1,
     borderRadius: 10,
-    // backgroundColor: 'yellow',
+    backgroundColor: 'skyblue',
   },
   containerAdditional: {padding: 5, height: '10%'},
   aditionalRow: {
-    display: 'flex',
+    flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
