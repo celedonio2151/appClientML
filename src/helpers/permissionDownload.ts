@@ -18,12 +18,12 @@ export default async function requestPermission({
 
   try {
     const granted = await PermissionsAndroid.request(permission, {
-      title: 'Downloader PDF App Permission',
+      title: 'Permiso para descargar PDF',
       message:
-        'Cool Photo App needs access to your camera so you can take awesome pictures.',
-      buttonNeutral: 'Ask Me Later',
-      buttonNegative: 'Cancel',
-      buttonPositive: 'OK',
+        'Esta aplicacion necesita acceso a tu alamcenamiento para guardar el PDF',
+      buttonNeutral: 'Preguntar mas tarde',
+      buttonNegative: 'Cancelar',
+      buttonPositive: 'Permitir',
     });
     console.log('🚀 ~ granted:', granted);
     // if (granted === PermissionsAndroid.RESULTS.GRANTED) {

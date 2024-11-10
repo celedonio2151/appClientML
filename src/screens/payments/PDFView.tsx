@@ -16,6 +16,11 @@ import RNFetchBlob from 'rn-fetch-blob';
 import {dateNameCustom} from '../../helpers/formatDate';
 import requestPermission from '../../helpers/permissionDownload';
 
+type PropTypes = {
+  readingId: string;
+  token: string;
+};
+
 export default function PDFView({
   readingId,
   token,
@@ -57,14 +62,14 @@ export default function PDFView({
         useDownloadManager: true,
         notification: true,
         mediaScannable: true,
-        title: `Recibo.pdf`,
+        title: `Recibo22.pdf`,
         path: `${dirs.DownloadDir}/Recibo_${invoiceName}.pdf`,
       },
       useDownloadManager: true,
       notification: true,
       mediaScannable: true,
-      title: 'Recibo.pdf',
-      date: `new Date()`,
+      title: 'Recibo22.pdf',
+      date: `${new Date()}`,
       path: `${dirToSave}/Recibo_${invoiceName}.pdf`,
     };
     const configOptions = Platform.select({
@@ -83,7 +88,11 @@ export default function PDFView({
         }
         if (Platform.OS === 'android') {
           console.log('file downloaded');
-          Alert.alert('Recibo descargado correctamente');
+          Alert.alert(
+            'Recibo descargado correctamente',
+            'El recibo de pago se guardo en la carpeta de descargas',
+            [{text: 'Aceptar'}],
+          );
         }
       })
       .catch(e => {
