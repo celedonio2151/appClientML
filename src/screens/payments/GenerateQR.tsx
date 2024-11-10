@@ -102,21 +102,21 @@ export default function GenerateQR({
       <View ref={viewRef} style={styles.containerImg}>
         <View style={styles.containerAdditional}>
           <View style={styles.aditionalRow}>
-            <Text style={{color: 'black', flex: 4}}>
+            <Text style={{color: 'black', flex: 4, fontSize: 13}}>
               Nombre: {responseBNB.aditional.name}
             </Text>
-            <Text style={{color: 'black', flex: 1}}>
+            <Text style={{color: 'black', flex: 1, fontSize: 13}}>
               Mes: {formatDate(new Date(responseBNB.aditional.month), 'MMMM')}{' '}
             </Text>
           </View>
           <View style={styles.aditionalRow}>
-            <Text style={{color: 'black', flex: 1}}>
-              Saldo:{responseBNB.aditional.amount}Bs
+            <Text style={{color: 'black', flex: 1, fontSize: 13}}>
+              Saldo: {responseBNB.aditional.amount}Bs
             </Text>
-            <Text style={{color: 'black', flex: 1}}>
+            <Text style={{color: 'black', flex: 1, fontSize: 13}}>
               Uso único: {responseBNB.aditional.singleUse ? 'SI' : 'NO'}{' '}
             </Text>
-            <Text style={{color: 'black', flex: 1}}>
+            <Text style={{color: 'black', flex: 1, fontSize: 13}}>
               Expira:{' '}
               {formatDate(
                 new Date(responseBNB.aditional.expirationDate),
