@@ -17,29 +17,34 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs'; // no er
 import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
 import DownloadPDF from '../../screens/downloadPDF/DownloadPDF';
 import SegunaOpcionPDF from '../../screens/downloadPDF/SeundaOpcionPDF';
+import HomeStack from '../Stack/HomeStack';
+import PaymentStack from '../Stack/PaymentStack';
+import ChartStack from '../Stack/ChartStack';
+import ProfileStack from '../Stack/ProfileStack';
+import {TAB_SCREENS} from '../../config/screenNames';
 
 const Tab = createMaterialBottomTabNavigator();
 
 export default function BootomNavigator() {
   return (
     <Tab.Navigator
-      initialRouteName="Home"
+      initialRouteName={TAB_SCREENS.HOME.path}
       // activeColor="#e91e63"
       activeColor="green"
       barStyle={{backgroundColor: 'black'}}>
       <Tab.Screen
-        name="Home"
-        component={HomeScreen}
+        name={TAB_SCREENS.HOME.path}
+        component={HomeStack}
         options={{
-          tabBarLabel: 'Inicio',
+          // tabBarLabel: 'Inicio',
           tabBarIcon: ({color}) => (
             <MaterialCommunityIcons name="home" color={color} size={26} />
           ),
         }}
       />
       <Tab.Screen
-        name="payment"
-        component={PaymentsScreen}
+        name={TAB_SCREENS.PAYMENT.path}
+        component={PaymentStack}
         // component={TestScreen}
         options={{
           tabBarLabel: 'Pagar',
@@ -49,8 +54,8 @@ export default function BootomNavigator() {
         }}
       />
       <Tab.Screen
-        name="Charts"
-        component={ChartScreen}
+        name={TAB_SCREENS.CHART.path}
+        component={ChartStack}
         options={{
           tabBarLabel: 'Gráficas',
           tabBarIcon: ({color}) => (
@@ -63,9 +68,8 @@ export default function BootomNavigator() {
         }}
       />
       <Tab.Screen
-        name="Profile"
-        component={UserProfileScreen}
-        // component={TestScreen}
+        name={TAB_SCREENS.ACCOUNT.path}
+        component={ProfileStack}
         options={{
           tabBarLabel: 'Mi perfíl',
           tabBarIcon: ({color}) => (

@@ -2,7 +2,8 @@ import {View, Text} from 'react-native';
 import React from 'react';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import DrawerContent from './DrawerContent';
-import StackNavigator from '../Stack/StackNavigator';
+// import StackNavigator from '../Stack/StackNavigator';
+import BootomNavigator from '../bottomNavigator/BottomNavigator';
 
 const Drawer = createDrawerNavigator();
 
@@ -17,7 +18,7 @@ export default function MyDrawer() {
         headerTitleAlign: 'center',
       }}
       drawerContent={props => <DrawerContent {...props} />}>
-      <Drawer.Screen name="Inicio" component={StackNavigator} />
+      <Drawer.Screen name="Inicio" component={BootomNavigator} />
       <Drawer.Screen name="Article" component={Article} />
     </Drawer.Navigator>
   );

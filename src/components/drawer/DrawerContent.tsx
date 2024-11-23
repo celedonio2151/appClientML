@@ -19,6 +19,7 @@ import {
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {formatDate} from '../../helpers/formatDate';
 import UserContext from '../../context/Context';
+import {STACK_SCREENS} from '../../config/screenNames';
 
 export default function DrawerContent(props: any) {
   const {logout, userProfile} = useContext(UserContext);
@@ -71,7 +72,7 @@ export default function DrawerContent(props: any) {
                 />
               )}
               label="Perfil"
-              onPress={() => props.navigation.navigate('Profile')}
+              onPress={() => props.navigation.navigate('AccountTab')}
             />
             <DrawerItem
               icon={({color, size}) => (
@@ -100,7 +101,9 @@ export default function DrawerContent(props: any) {
                 />
               )}
               label={`Lecturar ${formatDate(new Date(), 'MMMM YYYY')}`}
-              onPress={() => props.navigation.navigate('Reader')}
+              onPress={() =>
+                props.navigation.navigate(STACK_SCREENS.READER.path)
+              }
             />
           </Drawer.Section>
         </View>

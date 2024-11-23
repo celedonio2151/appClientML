@@ -8,10 +8,10 @@ export default function LoadingScreen() {
     <View style={styles.container}>
       {/* Puedes reemplazar esta imagen con el logo de tu aplicación */}
       <Image
-        source={require('../../assets/logoF.jpg')} // Tu logo aquí
+        source={require('../../assets/logoAgua.png')} // Tu logo aquí
         style={styles.logo}
       />
-      <LoadingActivity size="large" title='Cangando sistema' />
+      <LoadingActivity size="large" title="Cangando sistema" />
     </View>
   );
 }
@@ -24,9 +24,9 @@ const styles = StyleSheet.create({
     backgroundColor: 'black', // Fondo claro o el que prefieras
   },
   logo: {
-    width: 150, // Ancho de tu logo
-    height: 150, // Altura de tu logo
-    marginBottom: 20,
+    width: 120, // Ancho de tu logo
+    height: 120, // Altura de tu logo
+    resizeMode: 'center',
   },
   loadingText: {
     marginTop: 10,
