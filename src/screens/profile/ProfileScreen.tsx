@@ -162,7 +162,8 @@ const styles = StyleSheet.create({
   },
   firstCardContainer: {
     width: '100%',
-    minHeight: '30%',
+    // minHeight: 250,
+    height: '40%',
     justifyContent: 'center',
     flexDirection: 'row',
     alignItems: 'center',

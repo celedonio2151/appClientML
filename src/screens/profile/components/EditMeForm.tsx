@@ -10,6 +10,8 @@ import {Controller, useForm} from 'react-hook-form';
 import {useAppTheme} from '../../../..';
 import LoadingActivity from '../../../components/activity/LoadingActivity';
 import {UserProfileInterface} from '../../../interfaces/Interfaces';
+import usePatchFormData from '../../../hooks/usePatchFormData';
+import {config} from '../../../config/environment';
 
 interface BodyData {
   email: string;
@@ -59,26 +61,37 @@ export default function EditMeForm({setFormEdit}): React.JSX.Element {
   }, [myData]);
 
   const onSubmit = (data: BodyData) => {
+    let formData = new FormData();
+    if (data.email) formData.append('email', data.email);
+    if (data.phone_number) formData.append('phone_number', data.phone_number);
+    if (data.birthdate) formData.append('birthdate', String(inputDate));
+
     const body = {
       email: data.email,
       phone_number: data.phone_number,
       birthdate: inputDate,
     };
-    console.log('This is the data to submit', body);
+    console.log('This is the data to submit', formData);
     setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-    }, 2000);
-    // usePost(`/auth/user/signin`, {ci: data.ci})
-    //   .then((response: any) => {
-    //     console.log(response);
-    //   })
-    //   .catch(err => {
-    //     // console.log(err);
-    //     setError(true);
-    //     setErrorMessage(err.message);
-    //   })
-    //   .finally(() => setLoading(false));
+    fetch(`${config.SERVER}/user/update/me`, {
+      method: 'PATCH',
+      body: formData,
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then(response => response.json())
+      .then(response => {
+        console.log(response);
+        // navigation.navigate('Reader');
+      })
+      .catch(err => {
+        console.log(err);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   const stylesC = stylesCustom();
@@ -87,7 +100,7 @@ export default function EditMeForm({setFormEdit}): React.JSX.Element {
     <View>
       <Text style={stylesC.title}>Actualizar mis datos personales</Text>
       {myData && !loadingMe ? (
-        <Card>
+        <Card mode="elevated">
           <Card.Content style={stylesC.formGroup}>
             <Controller
               control={control}
@@ -229,6 +242,7 @@ function stylesCustom() {
       fontWeight: 'bold',
       textAlign: 'center',
       color: colors.blackC,
+      marginBottom: 10,
     },
     userIcon: {
       top: -60,

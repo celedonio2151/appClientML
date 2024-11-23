@@ -12,7 +12,7 @@ export default function Table({data, columns, onEdit}) {
 
   useEffect(() => {
     // Apply search filter
-    const filtered = data.filter(item => {
+    const filtered = data.filter((item: string) => {
       return Object.values(item).some(value =>
         value.toString().toLowerCase().includes(searchTerm.toLowerCase()),
       );
@@ -135,6 +135,8 @@ const styles = StyleSheet.create({
   },
   label: {
     color: 'black',
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
   cell: {
     flex: 1,
