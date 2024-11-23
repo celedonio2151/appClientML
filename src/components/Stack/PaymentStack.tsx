@@ -1,7 +1,7 @@
 import {DrawerActions, useNavigation} from '@react-navigation/native';
-import PaymentsScreen from '../../screens/payments/Payments';
-
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
+
+import PaymentsScreen from '../../screens/payments/Payments';
 import MaterialIcon from '../MaterialIcon/MaterialIcon';
 
 const Stack = createNativeStackNavigator();

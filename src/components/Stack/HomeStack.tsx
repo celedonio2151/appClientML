@@ -1,11 +1,11 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {DrawerActions, useNavigation} from '@react-navigation/native';
+import {View} from 'react-native';
+import {Text} from 'react-native-paper';
 
 import HomeScreen from '../../screens/home/HomeScreen';
 import ReaderScreen from '../../screens/reader/ReaderScreen';
 import ReadingFormScreen from '../../screens/readingForm/ReadingForm';
-import {View} from 'react-native';
-import {Text} from 'react-native-paper';
 import MaterialIcon from '../MaterialIcon/MaterialIcon';
 import {formatDate} from '../../helpers/formatDate';
 import {STACK_SCREENS} from '../../config/screenNames';

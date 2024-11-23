@@ -146,5 +146,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginTop: 10,
     color: 'black',
+    backgroundColor: 'black',
   },
 });

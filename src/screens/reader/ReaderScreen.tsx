@@ -9,8 +9,11 @@ import ScrollViewContainer from '../../layouts/ScrollViewContainer';
 import useFetch from '../../hooks/useFetch';
 import UserContext from '../../context/Context';
 import LoadingActivity from '../../components/activity/LoadingActivity';
+import {STACK_SCREENS} from '../../config/screenNames';
+import {useNavigation} from '@react-navigation/native';
 
 export default function ReaderScreen(props: any) {
+  const navigate = useNavigation();
   const {token} = useContext(UserContext);
   const [status, setStatus] = useState('checked');
   const [loginIn, setLoginIn] = useState(true);
@@ -19,17 +22,10 @@ export default function ReaderScreen(props: any) {
     token,
   );
 
-  // console.log({meters}, loadignMeters, errorMeters);
-  // console.log(meters);
-
-  const onButtonToggle = value => {
-    setStatus(status === 'checked' ? 'unchecked' : 'checked');
-  };
-
-  const handleEdit = item => {
+  const handleEdit = (item: any) => {
     // Lógica para editar la fila seleccionada
     // console.log('Edit item:', item);
-    props.navigation.navigate('ReadingForm', {...item});
+    props.navigation.navigate(STACK_SCREENS.READING_FORM.path, {...item});
   };
 
   const columns = [

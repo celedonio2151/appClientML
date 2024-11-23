@@ -1,7 +1,7 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {DrawerActions, useNavigation} from '@react-navigation/native';
 
 import ChartScreen from '../../screens/charts/Charts';
-import {DrawerActions, useNavigation} from '@react-navigation/native';
 import MaterialIcon from '../MaterialIcon/MaterialIcon';
 
 const Stack = createNativeStackNavigator();
