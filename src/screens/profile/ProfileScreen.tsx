@@ -74,7 +74,7 @@ export default function UserProfileScreen({
               <Image
                 source={
                   // uri: 'https://source.unsplash.com/collection/240395/800x600',
-                  require('../../assets/logoF.jpg')
+                  require('../../assets/logoAgua.png')
                 } // URL del logo (reemplazar)
                 style={styles.logoImage}
               />
@@ -171,16 +171,16 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   logoImage: {
-    width: 100,
-    height: 100,
+    width: 120,
+    height: 120,
+    resizeMode: 'center',
   },
   firstCardText: {
     fontSize: 30,
     textAlign: 'center',
-    maxWidth: '90%',
-    flexDirection: 'row',
+    maxWidth: '100%',
     fontWeight: 'bold',
-    color: 'skyblue',
+    color: '#0163d2',
   },
   secondCardContainer: {
     // position: 'relative',
