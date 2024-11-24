@@ -1,17 +1,8 @@
 import React, {useContext, useState} from 'react';
-import {View, Image, ScrollView} from 'react-native';
+import {View, Image} from 'react-native';
 import {StyleSheet} from 'react-native';
 
-import {
-  ActivityIndicator,
-  Button,
-  Card,
-  Divider,
-  IconButton,
-  MD2Colors,
-  Text,
-} from 'react-native-paper';
-import {RefreshControl} from 'react-native-gesture-handler';
+import {Button, Card, Divider, Text} from 'react-native-paper';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 // ICONS

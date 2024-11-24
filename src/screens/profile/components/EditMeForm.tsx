@@ -5,7 +5,14 @@ import {Controller, useForm} from 'react-hook-form';
 
 import UserContext from '../../../context/Context';
 import useFetch from '../../../hooks/useFetch';
-import {Button, Card, HelperText, TextInput} from 'react-native-paper';
+import {
+  Button,
+  Card,
+  HelperText,
+  Portal,
+  Snackbar,
+  TextInput,
+} from 'react-native-paper';
 import {useAppTheme} from '../../../..';
 import LoadingActivity from '../../../components/activity/LoadingActivity';
 import {UserProfileInterface} from '../../../interfaces/Interfaces';
@@ -25,10 +32,15 @@ export default function EditMeForm({setFormEdit}): React.JSX.Element {
   const [error, setError] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [inputDate, setInputDate] = useState<Date | null>(new Date()); // Input Date Picker
+  const [visible, setVisible] = React.useState(false); // Show or Hidden the snackbar
   const [myData, loadingMe, errorMe] = useFetch<UserProfileInterface>(
     `/user/me`,
     token,
   );
+
+  const onToggleSnackBar = () => setVisible(!visible);
+
+  const onDismissSnackBar = () => setVisible(false);
 
   // console.log(myData, loading, error);
   const {
@@ -79,6 +91,7 @@ export default function EditMeForm({setFormEdit}): React.JSX.Element {
       .then(response => {
         console.log('RESPONSE: ', response);
         // setFormEdit(false);
+        onToggleSnackBar();
         if (response?.statusCode) setErrorMessage(response.message);
       })
       .catch(err => {
@@ -203,6 +216,7 @@ export default function EditMeForm({setFormEdit}): React.JSX.Element {
               buttonColor="#009A2B"
               style={stylesC.loginButton}
               onPress={handleSubmit(onSubmit)}
+              // onPress={onToggleSnackBar}
               disabled={loading}>
               <Text style={stylesC.loginButtonText}>Actualizar mis datos</Text>
             </Button>
@@ -211,6 +225,19 @@ export default function EditMeForm({setFormEdit}): React.JSX.Element {
       ) : (
         <LoadingActivity title="Cargando mis datos..." size="large" />
       )}
+      <Snackbar
+        visible={visible}
+        onDismiss={onDismissSnackBar}
+        duration={4000}
+        action={{
+          label: 'Cerrar',
+
+          onPress: () => {
+            setFormEdit(false);
+          },
+        }}>
+        Editado correctamente!
+      </Snackbar>
     </View>
   );
 }
