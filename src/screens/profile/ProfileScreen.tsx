@@ -59,7 +59,10 @@ export default function UserProfileScreen({
   };
 
   return (
-    <ScrollViewContainer>
+    <ScrollViewContainer
+      top={top}
+      isRefreshing={isRefreshing}
+      onRefresh={onRefresh}>
       <LayoutContainer
         style={{
           margin: 0,
