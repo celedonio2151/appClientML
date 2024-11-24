@@ -65,8 +65,8 @@ export default function ChartScreen() {
   };
 
   return (
-    <LayoutContainer style={{margin: 0}}>
-      <ScrollViewContainer>
+    <ScrollViewContainer>
+      <LayoutContainer style={{margin: 0}}>
         <Appbar.Header>
           <Appbar.Content
             title={isMonthly ? 'Gráfico Mensual' : 'Gráfico Anual'}
@@ -154,8 +154,8 @@ export default function ChartScreen() {
             bezier
           />
         </Card>
-      </ScrollViewContainer>
-    </LayoutContainer>
+      </LayoutContainer>
+    </ScrollViewContainer>
   );
 }
 

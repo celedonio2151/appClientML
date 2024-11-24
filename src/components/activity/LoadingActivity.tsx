@@ -9,7 +9,7 @@ interface Props {
 
 export default function LoadingActivity({title, size = 'large'}: Props) {
   return (
-    <View style={{flexDirection: 'column'}}>
+    <View style={{flexDirection: 'column', padding: 20}}>
       <Text
         style={{
           color: `${MD2Colors.green500}`,

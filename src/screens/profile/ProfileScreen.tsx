@@ -25,6 +25,7 @@ import UserDetails from './components/UserDetails';
 import LoadingActivity from '../../components/activity/LoadingActivity';
 import EditMeForm from './components/EditMeForm';
 import {UserProfileInterface} from '../../interfaces/Interfaces';
+import ScrollViewContainer from '../../layouts/ScrollViewContainer';
 
 export default function UserProfileScreen({
   profilePicture = 'https://source.unsplash.com/random/800x600/?river,park',
@@ -58,116 +59,115 @@ export default function UserProfileScreen({
   };
 
   return (
-    <ScrollView
-      refreshControl={
-        <RefreshControl
-          refreshing={isRefreshing}
-          progressViewOffset={top}
-          colors={['red', 'orange', 'green']}
-          onRefresh={onRefresh}
-        />
-      }>
-      <LayoutContainer>
-        <View style={styles.container}>
-          <Card mode="elevated" style={styles.firstCardContainer}>
-            <View style={{alignItems: 'center'}}>
+    <ScrollViewContainer>
+      <LayoutContainer
+        style={{
+          margin: 0,
+          paddingHorizontal: 10,
+          // display: 'flex',
+          // justifyContent: 'space-between',
+          // backgroundColor: '#0163d2',
+        }}>
+        <Card mode="elevated" style={styles.firstCardContainer}>
+          <View style={{alignItems: 'center'}}>
+            <Image
+              source={
+                // uri: 'https://source.unsplash.com/collection/240395/800x600',
+                require('../../assets/logoAgua.png')
+              } // URL del logo (reemplazar)
+              style={styles.logoImage}
+            />
+          </View>
+          <View style={{alignItems: 'center'}}>
+            <Text style={styles.firstCardText}>
+              Comite de Agua Potable Mosoj Llajta
+            </Text>
+          </View>
+        </Card>
+        <Card mode="elevated" style={styles.secondCardContainer}>
+          <Card
+            mode="elevated"
+            elevation={3}
+            style={styles.imgProfileContainer}>
+            {data && data.profileImg ? (
               <Image
-                source={
-                  // uri: 'https://source.unsplash.com/collection/240395/800x600',
-                  require('../../assets/logoAgua.png')
-                } // URL del logo (reemplazar)
-                style={styles.logoImage}
+                source={{
+                  uri: data.profileImg,
+                }}
+                style={styles.profileImage}
               />
-            </View>
-            <View style={{alignItems: 'center'}}>
-              <Text style={styles.firstCardText}>
-                Comite de Agua Potable Mosoj Llajta
-              </Text>
-            </View>
+            ) : (
+              <Image
+                source={{
+                  uri: profilePicture,
+                }}
+                style={styles.profileImage}
+              />
+            )}
           </Card>
-          <Card mode="elevated" style={styles.secondCardContainer}>
-            <Card
-              mode="elevated"
-              elevation={3}
-              style={styles.imgProfileContainer}>
-              {data && data.profileImg ? (
-                <Image
-                  source={{
-                    uri: data.profileImg,
-                  }}
-                  style={styles.profileImage}
-                />
-              ) : (
-                <Image
-                  source={{
-                    uri: profilePicture,
-                  }}
-                  style={styles.profileImage}
-                />
-              )}
-            </Card>
-            <View
-              style={{
-                width: '100%',
-                // backgroundColor: 'red',
-                flex: 1,
-                flexDirection: 'row',
-                justifyContent: 'flex-end',
-                marginTop: -50,
-                // alignContent: 'flex-end',
-              }}>
-              {formEdit ? (
-                <Button onPress={() => setFormEdit(false)}>
-                  <CommunityIcons name={'close'} size={25} color="red" />
-                </Button>
-              ) : (
-                <Button onPress={() => setFormEdit(true)}>
-                  <CommunityIcons name={'pen'} size={25} color="gray" />
-                </Button>
-              )}
-            </View>
-            {!formEdit ? (
-              data ? (
-                <UserDetails userDetails={data} />
-              ) : (
-                <LoadingActivity title="Cargando mis datos personales ..." />
-              )
-            ) : null}
-            {formEdit && <EditMeForm setFormEdit={setFormEdit} />}
-          </Card>
-          {!formEdit && (
-            <Card style={styles.containerLogout}>
-              <Button
-                mode="elevated"
-                textColor="white"
-                style={styles.logoutButton}
-                onPress={() => handleLogout()}>
-                Cerrar sessión
+          <View
+            style={{
+              width: '100%',
+              // backgroundColor: 'red',
+              flex: 1,
+              flexDirection: 'row',
+              justifyContent: 'flex-end',
+              marginTop: -50,
+              // alignContent: 'flex-end',
+            }}>
+            {formEdit ? (
+              <Button onPress={() => setFormEdit(false)}>
+                <CommunityIcons name={'close'} size={25} color="red" />
               </Button>
-            </Card>
-          )}
-        </View>
+            ) : (
+              <Button onPress={() => setFormEdit(true)}>
+                <CommunityIcons name={'pen'} size={25} color="gray" />
+              </Button>
+            )}
+          </View>
+          {!formEdit ? (
+            data ? (
+              <UserDetails userDetails={data} />
+            ) : (
+              <LoadingActivity title="Cargando mis datos personales ..." />
+            )
+          ) : null}
+          {formEdit && <EditMeForm setFormEdit={setFormEdit} />}
+        </Card>
+        {!formEdit && (
+          <Card style={styles.containerLogout}>
+            <Button
+              mode="elevated"
+              textColor="white"
+              style={styles.logoutButton}
+              onPress={() => handleLogout()}>
+              Cerrar sessión
+            </Button>
+          </Card>
+        )}
       </LayoutContainer>
-    </ScrollView>
+    </ScrollViewContainer>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    height: '100%',
-    // backgroundColor: 'white',
-    justifyContent: 'space-between',
-  },
+  // container: {
+  //   flex: 1,
+  //   alignItems: 'center',
+  //   height: '100%',
+  //   // backgroundColor: 'white',
+  //   justifyContent: 'space-between',
+  // },
   firstCardContainer: {
     width: '100%',
     // minHeight: 250,
-    height: '40%',
+    height: 'auto',
+    paddingVertical: 30,
     justifyContent: 'center',
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 40,
+    marginTop: 10,
+    marginBottom: 30,
     backgroundColor: '#D9D9D9',
     borderRadius: 10,
   },
@@ -187,10 +187,10 @@ const styles = StyleSheet.create({
     // position: 'relative',
     // flexDirection: 'row',
     width: '100%',
-    minHeight: '50%',
+    height: 'auto',
     marginBottom: 20,
-    backgroundColor: '#D9D9D9',
     borderRadius: 10,
+    backgroundColor: '#D9D9D9',
   },
   imgProfileContainer: {
     top: -60,
@@ -198,7 +198,6 @@ const styles = StyleSheet.create({
     width: 'auto',
     backgroundColor: 'white',
     borderRadius: 50,
-    padding: 1,
   },
   profileImage: {
     width: 100,
@@ -207,12 +206,11 @@ const styles = StyleSheet.create({
   },
   containerLogout: {
     width: '100%',
-    // minHeight: '10%',
-    minHeight: 150,
-    // marginBottom: 140,
+    height: 'auto',
+    marginTop: 10,
+    marginBottom: 10,
   },
   logoutButton: {
-    // position: 'absolute',
     padding: 5,
     width: '100%',
     backgroundColor: '#FF0000',

@@ -197,7 +197,7 @@ export default function EditMeForm({setFormEdit}): React.JSX.Element {
               </HelperText>
             )}
           </Card.Content>
-          <Card.Content style={stylesC.formGroup}>
+          <Card.Content>
             <Button
               mode="elevated"
               buttonColor="#009A2B"
@@ -209,7 +209,7 @@ export default function EditMeForm({setFormEdit}): React.JSX.Element {
           </Card.Content>
         </Card>
       ) : (
-        <LoadingActivity title="Cargando mis datos..." size="small" />
+        <LoadingActivity title="Cargando mis datos..." size="large" />
       )}
     </View>
   );
@@ -245,14 +245,6 @@ function stylesCustom() {
       textAlign: 'center',
       color: colors.blackC,
       marginBottom: 10,
-    },
-    userIcon: {
-      top: -60,
-      alignSelf: 'center',
-      width: 'auto',
-      backgroundColor: 'white',
-      borderRadius: 50,
-      padding: 10,
     },
     formGroup: {
       // paddingTop: 20,

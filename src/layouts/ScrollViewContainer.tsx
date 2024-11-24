@@ -1,16 +1,22 @@
-import {View, Text, StyleSheet, ScrollView} from 'react-native';
+import {StyleSheet, ScrollView, StyleProp, ViewStyle} from 'react-native';
 import React, {Children, ReactNode} from 'react';
 
 interface Props {
+  style?: StyleProp<ViewStyle>;
   children: ReactNode;
 }
 
+const defaultStyle: ViewStyle = {
+  flex: 1,
+};
+
 export default function ScrollViewContainer({
+  style,
   children,
 }: Props): React.JSX.Element {
   return (
     <ScrollView
-      style={styles.scrollView}
+      style={[defaultStyle, style]}
       contentContainerStyle={styles.scrollContent}
       // contentInsetAdjustmentBehavior="automatic"
     >
