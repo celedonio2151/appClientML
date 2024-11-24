@@ -79,7 +79,7 @@ export default function UserProfileScreen({
                 style={styles.logoImage}
               />
             </View>
-            <View>
+            <View style={{alignItems: 'center'}}>
               <Text style={styles.firstCardText}>
                 Comite de Agua Potable Mosoj Llajta
               </Text>
@@ -179,7 +179,7 @@ const styles = StyleSheet.create({
   firstCardText: {
     fontSize: 30,
     textAlign: 'center',
-    maxWidth: '100%',
+    maxWidth: '90%',
     fontWeight: 'bold',
     color: '#0163d2',
   },

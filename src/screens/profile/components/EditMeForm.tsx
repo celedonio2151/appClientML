@@ -1,17 +1,16 @@
 import {View, Text, StyleSheet} from 'react-native';
 import React, {useContext, useEffect, useState} from 'react';
 import {DatePickerInput, DatePickerModal} from 'react-native-paper-dates';
-import {SafeAreaProvider} from 'react-native-safe-area-context';
+import {Controller, useForm} from 'react-hook-form';
 
 import UserContext from '../../../context/Context';
 import useFetch from '../../../hooks/useFetch';
 import {Button, Card, HelperText, TextInput} from 'react-native-paper';
-import {Controller, useForm} from 'react-hook-form';
 import {useAppTheme} from '../../../..';
 import LoadingActivity from '../../../components/activity/LoadingActivity';
 import {UserProfileInterface} from '../../../interfaces/Interfaces';
-import usePatchFormData from '../../../hooks/usePatchFormData';
 import {config} from '../../../config/environment';
+import usePatchFormData from '../../../hooks/usePatchFormData';
 
 interface BodyData {
   email: string;
@@ -65,14 +64,9 @@ export default function EditMeForm({setFormEdit}): React.JSX.Element {
     if (data.email) formData.append('email', data.email);
     if (data.phone_number) formData.append('phone_number', data.phone_number);
     if (data.birthdate) formData.append('birthdate', String(inputDate));
-
-    const body = {
-      email: data.email,
-      phone_number: data.phone_number,
-      birthdate: inputDate,
-    };
-    console.log('This is the data to submit', formData);
+    // console.log('This is the data to submit', formData);
     setLoading(true);
+    setErrorMessage(null);
     fetch(`${config.SERVER}/user/update/me`, {
       method: 'PATCH',
       body: formData,
@@ -83,15 +77,27 @@ export default function EditMeForm({setFormEdit}): React.JSX.Element {
     })
       .then(response => response.json())
       .then(response => {
-        console.log(response);
-        // navigation.navigate('Reader');
+        console.log('RESPONSE: ', response);
+        // setFormEdit(false);
+        if (response?.statusCode) setErrorMessage(response.message);
       })
       .catch(err => {
-        console.log(err);
+        console.log('ERROR: ', err);
+        setErrorMessage(err.message);
       })
       .finally(() => {
         setLoading(false);
       });
+    // usePatchFormData('/user/update/me', formData, token!)
+    //   .then(response => {
+    //     console.log(response);
+    //   })
+    //   .catch(err => {
+    //     console.log(err);
+    //   })
+    //   .finally(() => {
+    //     setLoading(false);
+    //   });
   };
 
   const stylesC = stylesCustom();
@@ -172,15 +178,6 @@ export default function EditMeForm({setFormEdit}): React.JSX.Element {
             {/* <Text style={stylesC.textColor}>
                       Carnet de identidad con el que se encuentra registrado
                     </Text> */}
-            {error && (
-              <HelperText
-                style={{paddingBottom: 0}}
-                padding="normal"
-                type="error"
-                visible={error}>
-                {errorMessage}
-              </HelperText>
-            )}
             <View
               style={{justifyContent: 'center', flex: 1, alignItems: 'center'}}>
               <DatePickerInput
@@ -194,6 +191,11 @@ export default function EditMeForm({setFormEdit}): React.JSX.Element {
                 inputMode="start"
               />
             </View>
+            {errorMessage && (
+              <HelperText padding="normal" type="error">
+                {errorMessage}
+              </HelperText>
+            )}
           </Card.Content>
           <Card.Content style={stylesC.formGroup}>
             <Button
