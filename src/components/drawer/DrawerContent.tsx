@@ -60,8 +60,6 @@ export default function DrawerContent(props: any) {
               <Caption style={styles.caption}>Followers</Caption>
             </View>
           </View>
-          {/* </View>
-        <View> */}
           <Drawer.Section style={styles.drawerSection}>
             <DrawerItem
               icon={({color, size}) => (
@@ -74,13 +72,13 @@ export default function DrawerContent(props: any) {
               label="Perfil"
               onPress={() => props.navigation.navigate('AccountTab')}
             />
-            <DrawerItem
+            {/* <DrawerItem
               icon={({color, size}) => (
                 <MaterialCommunityIcons name="tune" color={color} size={size} />
               )}
               label="Preferences"
               onPress={() => {}}
-            />
+            /> */}
             <DrawerItem
               icon={({color, size}) => (
                 <MaterialCommunityIcons
@@ -92,39 +90,23 @@ export default function DrawerContent(props: any) {
               label="Bookmarks"
               onPress={() => {}}
             />
-            <DrawerItem
-              icon={({color, size}) => (
-                <MaterialCommunityIcons
-                  name="speedometer"
-                  color={color}
-                  size={size}
-                />
-              )}
-              label={`Lecturar ${formatDate(new Date(), 'MMMM YYYY')}`}
-              onPress={() =>
-                props.navigation.navigate(STACK_SCREENS.READER.path)
-              }
-            />
+            {userProfile?.roles.includes('LECTURADOR') && (
+              <DrawerItem
+                icon={({color, size}) => (
+                  <MaterialCommunityIcons
+                    name="speedometer"
+                    color={color}
+                    size={size}
+                  />
+                )}
+                label={`Lecturar ${formatDate(new Date(), 'MMMM YYYY')}`}
+                onPress={() =>
+                  props.navigation.navigate(STACK_SCREENS.READER.path)
+                }
+              />
+            )}
           </Drawer.Section>
         </View>
-        {/* <Drawer.Section title="Preferences">
-          <TouchableRipple onPress={() => {}}>
-            <View style={styles.preference}>
-              <Text>Dark Theme</Text>
-              <View pointerEvents="none">
-                <Switch value={false} />
-              </View>
-            </View>
-          </TouchableRipple>
-          <TouchableRipple onPress={() => {}}>
-            <View style={styles.preference}>
-              <Text>RTL</Text>
-              <View pointerEvents="none">
-                <Switch value={false} />
-              </View>
-            </View>
-          </TouchableRipple>
-        </Drawer.Section> */}
         <View>
           <DrawerItem
             style={styles.buttonClose}

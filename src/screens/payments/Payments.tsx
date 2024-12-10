@@ -1,5 +1,5 @@
-import { FlatList, ScrollView, StyleSheet, View } from 'react-native';
-import React, { useContext, useEffect, useState } from 'react';
+import {FlatList, ScrollView, StyleSheet, View} from 'react-native';
+import React, {useContext, useEffect, useState} from 'react';
 import {
   Avatar,
   Button,
@@ -16,10 +16,10 @@ import ScrollViewContainer from '../../layouts/ScrollViewContainer';
 import GenerateQR from './GenerateQR';
 import useFetch from '../../hooks/useFetch';
 import UserContext from '../../context/Context';
-import { Reading } from '../interfaces/reading';
-import { formatDate } from '../../helpers/formatDate';
+import {Reading} from '../interfaces/reading';
+import {formatDate} from '../../helpers/formatDate';
 import usePost from '../../hooks/usePost';
-import { GenerateQRInterface } from '../interfaces/regerateQR';
+import {GenerateQRInterface} from '../interfaces/regerateQR';
 // import useFetchEvent from '../../hooks/useFetchEvent';
 import LoadingActivity from '../../components/activity/LoadingActivity';
 import InfinityScroll from '../../components/infinityScroll/InfinityScroll';
@@ -27,11 +27,13 @@ import useFetchEvent from '../../hooks/useFetchEvent';
 import PDFView from './PDFView';
 
 export default function PaymentsScreen() {
-  const { token, userProfile } = useContext(UserContext);
+  const {token, userProfile} = useContext(UserContext);
   const [visible, setVisible] = useState(false); // Show or hide modal window
   const [readingId, setReadingId] = useState<string>('');
   const [generateQR, setGenerateQR] = useState<boolean | null>(null);
-  const [responseBNB, setResponseBNB] = useState<GenerateQRInterface>();
+  const [responseBNB, setResponseBNB] = useState<GenerateQRInterface | null>(
+    null,
+  );
   const [loadingQR, setLoadingQR] = useState<boolean>(false);
   const [errorQR, setErrorQR] = useState<null>(null);
   const [showInvoice, setShowInvoice] = useState<boolean>(false);
@@ -52,7 +54,10 @@ export default function PaymentsScreen() {
 
   const showModal = () => setVisible(true);
   const hideModal = () => (
-    setVisible(false), setShowInvoice(false), setShowQr(false)
+    setVisible(false),
+    setShowInvoice(false),
+    setShowQr(false),
+    setResponseBNB(null)
   );
   console.log(readings, loading, error);
 
@@ -70,7 +75,7 @@ export default function PaymentsScreen() {
         console.log(err);
         setErrorQR(err);
       })
-      .finally(() => { });
+      .finally(() => {});
   };
   const handleOnViewInvoice = (readingId: string) => {
     console.log('Ver o descargar recibo ', readingId);
@@ -150,7 +155,7 @@ export default function PaymentsScreen() {
             borderRadius: 10,
           }}
           textColor="white">
-          <Text style={{ color: 'white', padding: 10, fontSize: 20 }}>
+          <Text style={{color: 'white', padding: 10, fontSize: 20}}>
             64Bs. Pagar todo
           </Text>
         </Button>
@@ -161,7 +166,7 @@ export default function PaymentsScreen() {
           onEndReached={loadMore}
           onEndReachedThreshold={0.6}
           keyExtractor={item => item._id.toString()}
-          renderItem={({ item }: { item: Reading }) => (
+          renderItem={({item}: {item: Reading}) => (
             <CardContainer
               key={item._id + 'ssxc'}
               styles={styles}
@@ -223,7 +228,7 @@ const styles = StyleSheet.create({
   },
 });
 
-function CardContainer({ styles, item, handleOnPay, handleOnViewInvoice }: any) {
+function CardContainer({styles, item, handleOnPay, handleOnViewInvoice}: any) {
   return (
     <Card mode="elevated" style={styles.cardContainer}>
       <Card.Content style={styles.boxContainer}>
@@ -246,7 +251,7 @@ function CardContainer({ styles, item, handleOnPay, handleOnViewInvoice }: any) 
       </Card.Content>
       <Divider horizontalInset={true} bold={true} />
       <Card.Content style={styles.boxContainer}>
-        <Text style={{ color: 'black', fontSize: 20 }}>Anterior 20Bs</Text>
+        <Text style={{color: 'black', fontSize: 20}}>Anterior 20Bs</Text>
         <Button
           mode="elevated"
           icon={item?.invoice?.isPaid ? 'eye' : 'qrcode-scan'}
