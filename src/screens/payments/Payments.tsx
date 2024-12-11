@@ -145,7 +145,7 @@ export default function PaymentsScreen() {
           }}>
           {`${new Date().getFullYear()}`}
         </Text> */}
-        <Button
+        {/* <Button
           mode="elevated"
           icon="qrcode-scan"
           onPress={() => handleOnPayAll()}
@@ -158,7 +158,7 @@ export default function PaymentsScreen() {
           <Text style={{color: 'white', padding: 10, fontSize: 20}}>
             64Bs. Pagar todo
           </Text>
-        </Button>
+        </Button> */}
       </View>
       {readings && !loading ? (
         <FlatList
@@ -229,6 +229,22 @@ const styles = StyleSheet.create({
 });
 
 function CardContainer({styles, item, handleOnPay, handleOnViewInvoice}: any) {
+  let disabledButton = false;
+  let icon;
+  if (item?.invoice !== null) {
+    icon = item?.invoice?.isPaid ? 'eye' : 'qrcode-scan';
+  }
+  let textButton;
+  if (item?.invoice !== null && item?.invoice?.isPaid) {
+    textButton = 'Ver recibo';
+  } else {
+    textButton = `${item.balance}Bs. Pagar`;
+  }
+
+  if (item.invoice === null) {
+    textButton = `Sin recibo`;
+    disabledButton = true;
+  }
   return (
     <Card mode="elevated" style={styles.cardContainer}>
       <Card.Content style={styles.boxContainer}>
@@ -254,7 +270,8 @@ function CardContainer({styles, item, handleOnPay, handleOnViewInvoice}: any) {
         <Text style={{color: 'black', fontSize: 20}}>Anterior 20Bs</Text>
         <Button
           mode="elevated"
-          icon={item?.invoice?.isPaid ? 'eye' : 'qrcode-scan'}
+          icon={icon}
+          disabled={disabledButton}
           onPress={() => {
             item?.invoice?.isPaid
               ? handleOnViewInvoice(String(item._id))
@@ -263,7 +280,7 @@ function CardContainer({styles, item, handleOnPay, handleOnViewInvoice}: any) {
           style={styles.buttonPay}
           buttonColor={item?.invoice?.isPaid ? 'gray' : '#009A2B'}
           textColor="white">
-          {item?.invoice?.isPaid ? 'Ver recibo' : `${item.balance}Bs. Pagar`}
+          {textButton}
         </Button>
       </Card.Content>
     </Card>

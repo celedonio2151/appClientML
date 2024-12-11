@@ -66,7 +66,7 @@ export default function BootomNavigator() {
           ),
         }}
       />
-      <Tab.Screen
+      {/* <Tab.Screen
         name="SignIn"
         // component={PDFView}
         component={DownloadPDF}
@@ -78,7 +78,7 @@ export default function BootomNavigator() {
             <MaterialIcon name="book" color={color} size={26} />
           ),
         }}
-      />
+      /> */}
     </Tab.Navigator>
   );
 }
